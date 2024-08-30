@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:logger/logger.dart';
 
 import 'enums/image_dimension_enum.dart';
 import 'enums/podcast_playback_speed.dart';
@@ -50,18 +50,6 @@ class SpotifySdk {
   // connection status channel
   static const EventChannel _connectionStatusChannel =
       EventChannel(EventChannels.connectionStatus);
-
-  //logging
-  static final Logger _logger = Logger(
-    //filter: CustomLogFilter(), // custom logfilter can be used to have logs in release mode
-    printer: PrettyPrinter(
-      methodCount: 2,
-      errorMethodCount: 8,
-      lineLength: 120,
-      colors: true,
-      printEmojis: true,
-    ),
-  );
 
   /// Connects to Spotify Remote, returning a [bool] for confirmation
   ///
@@ -650,11 +638,11 @@ class SpotifySdk {
     if (e is PlatformException) {
       var message = e.message ?? '';
       message += e.details != null ? '\n${e.details}' : '';
-      _logger.e('$method failed with: $message');
+      debugPrint('$method failed with: $message');
     } else if (e is MissingPluginException) {
-      _logger.e('$method not implemented');
+      debugPrint('$method not implemented');
     } else {
-      _logger.e('$method throws unhandled exception: ${e.toString()}');
+      debugPrint('$method throws unhandled exception: ${e.toString()}');
     }
   }
 }
